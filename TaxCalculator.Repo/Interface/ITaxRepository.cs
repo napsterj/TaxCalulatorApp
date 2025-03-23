@@ -3,7 +3,9 @@
 namespace TaxCalculator.Repo.Interface
 {
     public interface ITaxRepository
-    {
-        Task<(decimal, decimal)> CalculateValue(Price price, string countryName = "Austria");
+    {        
+        (decimal, decimal) GetVatAndGrossValues(decimal netAmount, decimal selectedTaxRate);
+        (decimal, decimal) GetNetAndGrossValues(decimal vatAmount, decimal selectedTaxRate);
+        (decimal, decimal) GetNetAndVatValues(decimal grossAmount, decimal selectedTaxRate);
     }
 }

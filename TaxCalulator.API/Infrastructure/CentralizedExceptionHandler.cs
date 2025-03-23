@@ -20,11 +20,22 @@ namespace TaxCalulator.API.Infrastructure
                 var problem = new ProblemExtension
                 {
                     Type = exception.GetType().Name,
-                    Detail = "Some error has occured.",
-                    Status = (int)HttpStatusCode.InternalServerError,
+                    Detail = exception.Message,                   
                     Title = "Error in completing your request",
                     Path = httpContext.Request.Path
                 };
+
+                if(httpContext.Response.StatusCode == (int)HttpStatusCode.NotFound)
+                {
+                    problem.Status = (int)HttpStatusCode.NotFound;
+                    problem.Title = nameof(HttpStatusCode.NotFound);
+                }
+
+                if (exception is BadHttpRequestException)
+                {
+                    problem.Status = (int)HttpStatusCode.BadRequest;
+                    problem.Title = nameof(HttpStatusCode.BadRequest);
+                }
 
                 await httpContext.Response.WriteAsJsonAsync(problem);
 

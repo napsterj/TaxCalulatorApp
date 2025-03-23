@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TaxCalculator.Repo.Interface;
+﻿using TaxCalculator.Repo.Interface;
 using TaxCalulator.Entities.Entities;
 using TaxCalulator.Service.Interface;
 
@@ -12,10 +7,20 @@ namespace TaxCalulator.Service.Implementation
     public class TaxService(ITaxRepository taxRepository) : ITaxService
     {
         private readonly ITaxRepository _taxRepository = taxRepository;
-
-        public Task<(decimal, decimal)> CalculateValues(Price price, decimal selectedTaxRate)
+        
+        public (decimal, decimal) GetNetAndGrossValues(Price price)
         {
-            throw new NotImplementedException();
+            return _taxRepository.GetVatAndGrossValues(price.NetPrice.Value, price.VatRate);
+        }
+
+        public (decimal, decimal) GetNetAndVatValues(Price price)
+        {
+            return _taxRepository.GetNetAndVatValues(price.GrossPrice.Value, price.VatRate);
+        }
+
+        public (decimal, decimal) GetVatAndGrossValues(Price price)
+        {
+            return _taxRepository.GetVatAndGrossValues(price.NetPrice.Value, price.VatRate);
         }
     }
 }

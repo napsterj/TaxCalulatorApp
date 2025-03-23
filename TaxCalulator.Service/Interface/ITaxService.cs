@@ -8,7 +8,9 @@ using TaxCalulator.Entities.Entities;
 namespace TaxCalulator.Service.Interface
 {
     public interface ITaxService
-    {
-        Task<(decimal, decimal)> CalculateValues(Price price, decimal selectedTaxRate);
+    {        
+        (decimal, decimal) GetVatAndGrossValues(Price price);
+        (decimal, decimal) GetNetAndGrossValues(Price price);
+        (decimal, decimal) GetNetAndVatValues(Price price);
     }
 }
