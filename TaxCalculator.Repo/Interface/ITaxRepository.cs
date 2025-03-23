@@ -4,6 +4,6 @@ namespace TaxCalculator.Repo.Interface
 {
     public interface ITaxRepository
     {
-        Task<decimal> CalculateValue(Price price);
+        Task<(decimal, decimal)> CalculateValue(Price price, string countryName = "Austria");
     }
 }

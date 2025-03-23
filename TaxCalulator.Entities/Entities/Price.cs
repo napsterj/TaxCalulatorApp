@@ -13,5 +13,6 @@ namespace TaxCalulator.Entities.Entities
         public decimal? NetPrice { get; set; }
         public decimal? VatAmount { get; set; }
         public decimal? GrossPrice { get; set; }
+        public decimal VatRate { get; set; }
     }
 }
