@@ -25,7 +25,7 @@ namespace TaxCalulator.API.Controllers
                                 "perform price/vat calculation.");
             }
 
-            if (priceDto.CountryDto == null)
+            if (string.IsNullOrWhiteSpace(priceDto.CountryName))
             {
                 throw new BadHttpRequestException("Please supply the country name for a " +
                                                   "valid price/VAT calculation.");

@@ -25,8 +25,8 @@ namespace TaxCalculator.Repo.Implementation
 
         public (decimal, decimal) GetNetAndVatValues(decimal grossAmount, decimal selectedTaxRate)
         {
-            var vatAmount = selectedTaxRate / 100;
-            var netAmount = grossAmount - vatAmount;
+            var netAmount = grossAmount * 100 / (selectedTaxRate + 100);
+            var vatAmount = grossAmount - netAmount;
             return (netAmount, vatAmount);
         }
     }

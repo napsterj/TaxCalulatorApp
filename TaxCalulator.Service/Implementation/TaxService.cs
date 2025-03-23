@@ -8,7 +8,7 @@ namespace TaxCalulator.Service.Implementation
     {
         private readonly ITaxRepository _taxRepository = taxRepository;
         
-        public (decimal, decimal) GetNetAndGrossValues(Price price)
+        public (decimal, decimal) GetVatAndGrossValues(Price price)
         {
             return _taxRepository.GetVatAndGrossValues(price.NetPrice.Value, price.VatRate);
         }
@@ -18,9 +18,9 @@ namespace TaxCalulator.Service.Implementation
             return _taxRepository.GetNetAndVatValues(price.GrossPrice.Value, price.VatRate);
         }
 
-        public (decimal, decimal) GetVatAndGrossValues(Price price)
+        public (decimal, decimal) GetNetAndGrossValues(Price price)
         {
-            return _taxRepository.GetVatAndGrossValues(price.NetPrice.Value, price.VatRate);
+            return _taxRepository.GetNetAndGrossValues(price.VatAmount.Value, price.VatRate);
         }
     }
 }
