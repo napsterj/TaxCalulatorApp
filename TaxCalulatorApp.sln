@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxCalulator.DAL", "TaxCalu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxCalulator.UI", "TaxCalulator.UI\TaxCalulator.UI.csproj", "{EB90FC2F-D400-498F-B02B-E53FB824FD6F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxCalulator.Services.Test", "TaxCalulator.Services.Test\TaxCalulator.Services.Test.csproj", "{48A9B898-45AE-4256-8132-A13BD7BCDE7F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{EB90FC2F-D400-498F-B02B-E53FB824FD6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB90FC2F-D400-498F-B02B-E53FB824FD6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB90FC2F-D400-498F-B02B-E53FB824FD6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48A9B898-45AE-4256-8132-A13BD7BCDE7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48A9B898-45AE-4256-8132-A13BD7BCDE7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48A9B898-45AE-4256-8132-A13BD7BCDE7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48A9B898-45AE-4256-8132-A13BD7BCDE7F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
