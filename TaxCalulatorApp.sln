@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35913.81 d17.13
+VisualStudioVersion = 17.13.35913.81
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxCalulator.API", "TaxCalulator.API\TaxCalulator.API.csproj", "{42FDD37E-03DB-42EE-953D-3513377B4DE2}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxCalulator.Entities", "TaxCalulator.Entities\TaxCalulator.Entities.csproj", "{198382AC-12EE-4512-96B0-0A419E161060}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxCalulator.DAL", "TaxCalulator.DAL\TaxCalulator.DAL.csproj", "{F361369F-CC21-47C3-A214-CAD640FEBB51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxCalulator.UI", "TaxCalulator.UI\TaxCalulator.UI.csproj", "{EB90FC2F-D400-498F-B02B-E53FB824FD6F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{F361369F-CC21-47C3-A214-CAD640FEBB51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F361369F-CC21-47C3-A214-CAD640FEBB51}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F361369F-CC21-47C3-A214-CAD640FEBB51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB90FC2F-D400-498F-B02B-E53FB824FD6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB90FC2F-D400-498F-B02B-E53FB824FD6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB90FC2F-D400-498F-B02B-E53FB824FD6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB90FC2F-D400-498F-B02B-E53FB824FD6F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
