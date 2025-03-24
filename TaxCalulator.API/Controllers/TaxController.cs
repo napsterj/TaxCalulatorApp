@@ -59,7 +59,7 @@ namespace TaxCalulator.API.Controllers
         }
 
         [HttpPost("calculate/price/details")]
-        public async Task<IActionResult> GetPriceDetails([FromBody] PriceDto priceDto)
+        public async Task<IActionResult> GetPriceDetails([FromBody]PriceDto priceDto)
         {
             var countries = await _countryService.GetCountries();
 
@@ -90,7 +90,7 @@ namespace TaxCalulator.API.Controllers
 
             return Ok(GetResultWithReponse(price));
         }
-
+        
         private ResponseDto GetResultWithReponse(Price price)
         {
             if (price.NetPrice != 0.00M)

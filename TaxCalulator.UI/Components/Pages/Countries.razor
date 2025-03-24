@@ -1,0 +1,23 @@
+﻿@page "/countries"
+
+<h3 class="text-center">Countries</h3>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <div class="dropdown-center">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Country
+                </button>
+                @if(CountryList.Count > 0)
+                {
+                    <Virtualize Context="model" Items="@CountryList">
+                        <ul class="dropdown-menu" @bind->
+                            <li class="dropdown-item"  itemid="@model.Id">@model.Name</li>                            
+                        </ul>
+                    </Virtualize>
+                }                
+            </div>
+        </div>
+    </div>
+</div>

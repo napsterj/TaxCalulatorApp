@@ -1,20 +1,13 @@
 ﻿@page "/calculate/vat"
 
+@rendermode InteractiveServer
+
 <h3 class="text-center">Vat Calculator</h3>
 
 <div class="container-fluid">
     <div class="row">
         <div class="col">            
-            <div class="dropdown-center">
-                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Country
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Action two</a></li>
-                    <li><a class="dropdown-item" href="#">Action three</a></li>
-                </ul>
-            </div>
+           <Countries></Countries>
         </div>
     </div>
 </div>
