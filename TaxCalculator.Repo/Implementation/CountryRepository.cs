@@ -9,9 +9,9 @@ namespace TaxCalculator.Repo.Implementation
     {
         private readonly CalculatorDbContext _context = context;
 
-        public async Task<IEnumerable<Country>> GetCountries()
+        public async Task<List<Country>> GetCountries()
         {
-            return await _context.Countries.AsNoTracking().ToHashSetAsync();
+            return await _context.Countries.AsNoTracking().ToListAsync();
         }
     }
 }

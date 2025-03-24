@@ -22,5 +22,8 @@ namespace TaxCalulator.Service.Implementation
         {
             return _taxRepository.GetNetAndGrossValues(price.VatAmount.Value, price.VatRate);
         }
+
+        public Task<IEnumerable<TaxRate>> GetTaxRatesByCountry(Country country) =>  _taxRepository.GetTaxRatesByCountry(country);
+        
     }
 }

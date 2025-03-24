@@ -8,7 +8,7 @@ namespace TaxCalulator.Service.Implementation
     {
         private readonly ICountryRepository _countryRepository = countryRepository;
 
-        public Task<IEnumerable<Country>> GetCountries()
+        public Task<List<Country>> GetCountries()
         {
             return _countryRepository.GetCountries();
         }

@@ -12,5 +12,7 @@ namespace TaxCalulator.Service.Interface
         (decimal, decimal) GetVatAndGrossValues(Price price);
         (decimal, decimal) GetNetAndGrossValues(Price price);
         (decimal, decimal) GetNetAndVatValues(Price price);
+        Task<IEnumerable<TaxRate>> GetTaxRatesByCountry(Country country);
+
     }
 }

@@ -8,8 +8,8 @@ namespace TaxCalculator.Repo.Implementation
     public class TaxRepository(CalculatorDbContext context) : ITaxRepository
     {
         private readonly CalculatorDbContext _context = context;
-        
-        public (decimal,decimal) GetVatAndGrossValues(decimal netAmount, decimal selectedTaxRate)
+
+        public (decimal, decimal) GetVatAndGrossValues(decimal netAmount, decimal selectedTaxRate)
         {
             var vatAmount = (netAmount * selectedTaxRate) / 100;
             var grossAmount = netAmount + vatAmount;
@@ -28,6 +28,15 @@ namespace TaxCalculator.Repo.Implementation
             var netAmount = grossAmount * 100 / (selectedTaxRate + 100);
             var vatAmount = grossAmount - netAmount;
             return (netAmount, vatAmount);
+        }
+
+        public async Task<IEnumerable<TaxRate>> GetTaxRatesByCountry(Country country)
+        {
+            return await _context.TaxRates
+                                 .AsNoTracking()
+                                 .Where(c => c.Country.Id == country.Id || 
+                                        c.Country.Name.ToUpper() == country.Name.ToUpper())
+                                 .ToListAsync();
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using TaxCalulator.API.Common;
 using TaxCalulator.API.Dtos;
 using TaxCalulator.API.Mappers;
 using TaxCalulator.Entities.Entities;
@@ -14,21 +16,65 @@ namespace TaxCalulator.API.Controllers
         private readonly ITaxService _taxService = taxService;
         private readonly ICountryService _countryService = countryService;
 
+        [HttpGet("get/countries")]
+        public async Task<IActionResult> GetCountries()
+        {
+            var countries = await _countryService.GetCountries();
+                       
+            if (countries == null || !countries.Any())
+            {
+                return NotFound(BuildResponseDto(HttpStatusCode.NotFound, AppConstants.NO_COUNTRIES));
+            }
+
+            var countryListMapper = new CountryListMapper();
+            var countriesDto = countryListMapper.CountryToCountryDto(countries);
+            
+            return Ok(BuildResponseDto(HttpStatusCode.OK, "", countriesDto));
+        }
+
+        [HttpPost("get/taxrates/bycountry")]
+        public async Task<IActionResult> GetTaxRatesByCountry([FromBody] CountryDto countryDto)
+        {
+            if (countryDto == null || string.IsNullOrWhiteSpace(countryDto.Name))
+            {
+                var responseDto = BuildResponseDto(HttpStatusCode.BadRequest, AppConstants.COUNTRY_REQUIRED);
+                return BadRequest(responseDto);
+            }
+
+            var countryMapper = new CountryMapper();
+            var taxMapper = new TaxRateMapper();
+
+            var taxRates = await _taxService.GetTaxRatesByCountry(countryMapper.CountryDtoToCountry(countryDto));
+
+            if (taxRates == null || !taxRates.Any())
+            {
+                var responseDto = BuildResponseDto(HttpStatusCode.NotFound,
+                                                   AppConstants.NO_VAT_RATES_FOUND);
+                return NotFound(responseDto);
+            }
+
+            var taxRateDto = taxMapper.TaxRateToTaxRateDto([.. taxRates]);
+
+            return Ok(BuildResponseDto(HttpStatusCode.OK, "", taxRateDto));
+        }
+
         [HttpPost("calculate/price/details")]
-        public async Task<IActionResult> GetPriceDetails([FromBody]PriceDto priceDto)
+        public async Task<IActionResult> GetPriceDetails([FromBody] PriceDto priceDto)
         {
             var countries = await _countryService.GetCountries();
 
             if (countries == null)
             {
-                return NotFound("Please add countries in the application to " +
-                                "perform price/vat calculation.");
+                return NotFound(BuildResponseDto(HttpStatusCode.NotFound,
+                                                 AppConstants.NO_COUNTRIES));
             }
 
-            if (string.IsNullOrWhiteSpace(priceDto.CountryName))
+            var isCountryNotListed = countries.Exists(c => c.Name.ToUpper() != priceDto.CountryName.ToUpper());
+            
+            if (string.IsNullOrWhiteSpace(priceDto.CountryName) || 
+                isCountryNotListed)
             {
-                throw new BadHttpRequestException("Please supply the country name for a " +
-                                                  "valid price/VAT calculation.");
+                throw new BadHttpRequestException(AppConstants.INVALID_COUNTRY);
             }
 
             if (priceDto.NetPrice <= 0.00M &&
@@ -69,12 +115,18 @@ namespace TaxCalulator.API.Controllers
 
             var (netAmount, vatAmount) = _taxService.GetNetAndVatValues(price);
 
+            return BuildResponseDto(System.Net.HttpStatusCode.OK, "", new { netAmount = netAmount, vatValue = vatAmount });
+
+        }
+
+        private ResponseDto BuildResponseDto(HttpStatusCode statusCode, string? error, object? data = null)
+        {
             return new ResponseDto
             {
-                StatusCode = System.Net.HttpStatusCode.OK,
-                Result = new { netAmount = netAmount, vatValue = vatAmount }
+                StatusCode = statusCode,
+                Error = error,
+                Result = data
             };
-           
         }
     }
 }

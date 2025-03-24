@@ -4,6 +4,6 @@ namespace TaxCalulator.Service.Interface
 {
     public interface ICountryService
     {
-        Task<IEnumerable<Country>> GetCountries();
+        Task<List<Country>> GetCountries();
     }
 }

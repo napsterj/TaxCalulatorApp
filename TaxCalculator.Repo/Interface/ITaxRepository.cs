@@ -7,5 +7,7 @@ namespace TaxCalculator.Repo.Interface
         (decimal, decimal) GetVatAndGrossValues(decimal netAmount, decimal selectedTaxRate);
         (decimal, decimal) GetNetAndGrossValues(decimal vatAmount, decimal selectedTaxRate);
         (decimal, decimal) GetNetAndVatValues(decimal grossAmount, decimal selectedTaxRate);
+
+        Task<IEnumerable<TaxRate>> GetTaxRatesByCountry(Country country);
     }
 }

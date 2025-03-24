@@ -4,8 +4,8 @@ namespace TaxCalulator.UI.IServices.Interface
 {
     public interface ITaxService
     {
-        ResponseDto GetVatAndGrossValues(PriceDto priceDto);
-        ResponseDto GetNetAndGrossValues(PriceDto priceDto);
-        ResponseDto GetNetAndVatValues(PriceDto priceDto);
+        Task<ResponseDto> GetVatAndGrossValues(PriceDto priceDto);
+        Task<ResponseDto> GetNetAndGrossValues(PriceDto priceDto);
+        Task<ResponseDto> GetNetAndVatValues(PriceDto priceDto);
     }
 }
