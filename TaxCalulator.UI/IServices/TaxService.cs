@@ -9,7 +9,8 @@ namespace TaxCalulator.UI.IServices
         private readonly IConfiguration _configuration;
      
         private string _baseUrl = string.Empty;
-        public TaxService(IBaseService baseService, IConfiguration configuration)
+        public TaxService(IBaseService baseService, 
+                          IConfiguration configuration)
         {
             _baseService = baseService;
             _configuration = configuration;
@@ -28,12 +29,32 @@ namespace TaxCalulator.UI.IServices
 
         public Task<ResponseDto> GetNetAndVatValues(PriceDto priceDto)
         {
-            throw new NotImplementedException();
+            return _baseService.SendAsync(new RequestDto
+            {
+                ApiType = Common.AppConstants.ApiType.POST,
+                Url = $"{_baseUrl}/api/Tax/calculate/price/details",
+                Data = priceDto
+            });
+        }
+
+        public Task<ResponseDto> GetTaxRatesByCountry(CountryDto countryDto)
+        {
+            return _baseService.SendAsync(new RequestDto
+            {
+                ApiType = Common.AppConstants.ApiType.POST,
+                Url = $"{_baseUrl}/api/Tax/get/taxrates/bycountry",
+                Data = countryDto
+            });
         }
 
         public Task<ResponseDto> GetVatAndGrossValues(PriceDto priceDto)
         {
-            throw new NotImplementedException();
+            return _baseService.SendAsync(new RequestDto
+            {
+                ApiType = Common.AppConstants.ApiType.POST,
+                Url = $"{_baseUrl}/api/Tax/calculate/price/details",
+                Data = priceDto
+            });
         }
     }
 }

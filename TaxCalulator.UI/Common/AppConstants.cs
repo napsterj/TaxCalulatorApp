@@ -9,5 +9,10 @@
             PUT, 
             DELETE
         }
+
+        public const string NET = "NET";
+        public const string VAT = "VAT";
+        public const string GROSS = "GROSS";
+
     }
 }

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using TaxCalulator.UI.Dtos;
 using TaxCalulator.UI.Dtos.Wrappers;
@@ -12,12 +13,22 @@ namespace TaxCalulator.UI.Components.Pages
         
         public HashSet<CountryDto> CountryList { get; set; } = new();
 
-        protected override async Task OnInitializedAsync()
+        [Parameter]
+        public EventCallback<string> CountryName { get; set; }
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            var response = await _countryService.GetCountries();
-            var countriesHandler = JsonConvert.DeserializeObject<DeserializeDtoHandler>(Convert.ToString(response.Result));
-            CountryList = countriesHandler.Result;
+            if (firstRender)
+            {
+                var response = await _countryService.GetCountries();
+                var countriesHandler = JsonConvert.DeserializeObject<DeserializeDtoHandler>(Convert.ToString(response.Result));
+                CountryList = countriesHandler.Result;
+                StateHasChanged();
+            }
         }
-        
+                              
+        public void SelectCountry(ChangeEventArgs args)
+        {
+            CountryName.InvokeAsync(Convert.ToString(args.Value));
+        }
     }
 }

@@ -19,14 +19,15 @@ namespace TaxCalulator.UI.IServices
             var client = _clientFactory.CreateClient();
 
             var headers = client.DefaultRequestHeaders;
-            headers.Add("content-type", "application/json");
+            headers.Add("Accept", "application/json");            
 
             //2.  Instantiate HttpRequestMessage and move data to it from dto
 
             var httpReqMessage = new HttpRequestMessage
             {
                 Content = new StringContent(JsonConvert.SerializeObject(requestDto.Data), Encoding.UTF8, "application/json"),
-                RequestUri = new Uri(requestDto.Url),                                
+                RequestUri = new Uri(requestDto.Url),    
+                
             };
 
             httpReqMessage.Method = requestDto.ApiType switch
@@ -45,27 +46,34 @@ namespace TaxCalulator.UI.IServices
             ResponseDto _responseDto = new();
             
             if (httpResMessage != null)
-            {                
+            {
+                JsonSerializerSettings settings = new()
+                {
+                    Formatting = Newtonsoft.Json.Formatting.Indented,
+                    ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
+                    
+                };
+
                 switch (httpResMessage.StatusCode)
                 {
                     case HttpStatusCode.BadRequest:
                         var response = await httpResMessage.Content.ReadAsStringAsync();
-                        _responseDto = JsonConvert.DeserializeObject<ResponseDto>(response);
+                        _responseDto.Error = JsonConvert.DeserializeObject<string>(response);
                         break;
 
                     case HttpStatusCode.InternalServerError:
                         var content = await httpResMessage.Content.ReadAsStringAsync();
-                        _responseDto = JsonConvert.DeserializeObject<ResponseDto>(content);
+                        _responseDto.Error = JsonConvert.DeserializeObject<string>(content);
                         break;
 
                     case HttpStatusCode.NotFound:
                         var output = await httpResMessage.Content.ReadAsStringAsync();
-                        _responseDto = JsonConvert.DeserializeObject<ResponseDto>(output);
+                        _responseDto.Error = JsonConvert.DeserializeObject<string>(output);
                         break;
 
                     default:
                         var apiResponse = await httpResMessage.Content.ReadAsStringAsync();
-                        _responseDto = JsonConvert.DeserializeObject<ResponseDto>(apiResponse);
+                        _responseDto.Result = JsonConvert.DeserializeObject<object>(apiResponse, settings);
                         break;
                 }
             }

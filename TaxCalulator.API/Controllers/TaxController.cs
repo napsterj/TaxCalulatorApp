@@ -69,10 +69,10 @@ namespace TaxCalulator.API.Controllers
                                                  AppConstants.NO_COUNTRIES));
             }
 
-            var isCountryNotListed = countries.Exists(c => c.Name.ToUpper() != priceDto.CountryName.ToUpper());
+            var isCountryListed = countries.Exists(c => c.Name.ToUpper() == priceDto.CountryName.ToUpper());
             
             if (string.IsNullOrWhiteSpace(priceDto.CountryName) || 
-                isCountryNotListed)
+                !isCountryListed)
             {
                 throw new BadHttpRequestException(AppConstants.INVALID_COUNTRY);
             }
@@ -99,7 +99,7 @@ namespace TaxCalulator.API.Controllers
                 return new ResponseDto
                 {
                     StatusCode = System.Net.HttpStatusCode.OK,
-                    Result = new { vatAmount = vatValue, grossValue = grossAmount }
+                    Result = new PriceDto { NetPrice = price.NetPrice, VatAmount = vatValue, GrossPrice = grossAmount }
                 };
 
             }
@@ -109,13 +109,19 @@ namespace TaxCalulator.API.Controllers
                 return new ResponseDto
                 {
                     StatusCode = System.Net.HttpStatusCode.OK,
-                    Result = new { netAmount = netValue, grossValue = grossAmount }
+                    Result = new PriceDto { NetPrice = netValue, VatAmount = price.VatAmount, GrossPrice = grossAmount }
                 };
             }
 
             var (netAmount, vatAmount) = _taxService.GetNetAndVatValues(price);
 
-            return BuildResponseDto(System.Net.HttpStatusCode.OK, "", new { netAmount = netAmount, vatValue = vatAmount });
+            return BuildResponseDto(System.Net.HttpStatusCode.OK, "", 
+                                    new PriceDto 
+                                    { 
+                                           NetPrice = netAmount, 
+                                           VatAmount = vatAmount, 
+                                           GrossPrice = price.GrossPrice 
+                                    });
 
         }
 

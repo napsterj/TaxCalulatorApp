@@ -1,15 +1,89 @@
 ﻿@page "/calculate/vat"
 
+@attribute [StreamRendering]
+
 @rendermode InteractiveServer
 
 <h3 class="text-center">Vat Calculator</h3>
 
-<div class="container-fluid">
+<div class="container-fluid m-3">
     <div class="row">
-        <div class="col">            
-           <Countries></Countries>
+        <div class="col">
+            <Countries CountryName="FetchCountryVatRates"></Countries>
         </div>
     </div>
+    <div class="row">
+        <div class="col p-3 m-3">
+            <Virtualize Context="model" Items="@taxRates">
+                <input type="radio" 
+                       name="vatrates"                        
+                       checked="@(taxRates.IndexOf(model) == 0)"
+                       class="form-check-input border-warning" 
+                       @onclick="@(() => SetSelectedVatRate(model.Rate))"
+                       @bind-value="@model.Rate" />
+                
+                    &nbsp;&nbsp;@model.Rate % &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </Virtualize>
+
+        </div>
+    </div>
+</div>
+
+<div class="container m-4">
+    <EditForm FormName="TaxCalculatorForm" Enhance="true" Model="Price">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-label">Price without VAT</label>
+                <input type="radio" 
+                       name="inputs" 
+                       checked="@(!isDisableNetPrice)" 
+                       class="form-check-input" 
+                       @onchange="@(() => ToggleEnableInputs(AppConstants.NET))" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <input type="number" 
+                       disabled="@(isDisableNetPrice)" 
+                       class="form-control" 
+                       @bind-value="Price.NetPrice"
+                       @onblur="@(() => GetPriceDetails(AppConstants.NET))" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-label">Value-Added Tax</label>
+                <input type="radio" 
+                       name="inputs" 
+                       class="form-check-input" 
+                       @onchange="@(() => ToggleEnableInputs(AppConstants.VAT))"/>
+            </div>
+            <div class="col-md-6 mb-3">
+                <input type="number" 
+                       disabled="@(isDisableVatAmount)" 
+                       class="form-control" 
+                       @bind-value="Price.VatAmount"
+                       @onblur="@(() => GetPriceDetails(AppConstants.VAT))" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-label">Price Incl. VAT</label>
+                <input type="radio" 
+                       name="inputs" 
+                       class="form-check-input" 
+                       @onchange="@(() => ToggleEnableInputs(AppConstants.GROSS))" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <input type="number" 
+                       disabled="@(isDisableGrossPrice)" 
+                       class="form-control" 
+                       @bind-value="Price.GrossPrice"
+                       @onblur="@(() => GetPriceDetails(AppConstants.GROSS))" />
+            </div>
+        </div>
+    </EditForm>
 </div>
 
 
