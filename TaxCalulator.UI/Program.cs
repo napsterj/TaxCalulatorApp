@@ -8,6 +8,14 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddCircuitOptions(config => config.DetailedErrors = true);
 
+builder.Services.AddLogging(config =>
+{
+    config.ClearProviders();
+    config.AddConsole();
+});
+
+builder.Services.AddMemoryCache();
+
 //DI-related Registrations
 builder.RegisterDependencies();
 

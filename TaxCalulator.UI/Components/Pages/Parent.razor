@@ -1,0 +1,37 @@
+﻿@page "/blazor/lifecycle"
+@rendermode InteractiveServer
+<h3>Parent</h3>
+
+<div class="container">
+    <div class="row col">
+        <input type="text"  class="form-control border-warning" 
+                            placeholder="For child component" 
+                            @bind:get="greeting" 
+                            @bind:set="@(OnGreetingChange)" 
+                            @bind:event="oninput" />
+    </div>
+    <div class="row col">
+        <input type="text" class="form-control border-warning" 
+                           placeholder="For another child component" 
+                           @bind:get="AnotherChildGreeting" 
+                           @bind:set="@(OnAnotherChildGreetingChange)" 
+                           @bind:event="oninput" />
+    </div>
+</div>
+
+Welcome, @greeting
+
+<br />
+<h4>First Child component below</h4>
+
+<CascadingValue Name="ChildGreeting" Value="@greeting">
+    <ChildComponent></ChildComponent>
+</CascadingValue>
+
+<br />
+<h4>Second Child component below</h4>
+
+<AnotherChildComponent AcknowledgeParent="DisplayAnotherChildMessage" 
+                       AnotherChildGreeting="@AnotherChildGreeting">
+
+</AnotherChildComponent>

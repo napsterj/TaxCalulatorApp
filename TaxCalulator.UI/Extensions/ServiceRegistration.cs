@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System.Runtime.CompilerServices;
 using TaxCalulator.UI.IServices;
 using TaxCalulator.UI.IServices.Interface;
@@ -17,7 +18,7 @@ namespace TaxCalulator.UI.Extensions
 
             builder.Services.AddScoped<IBaseService, BaseService>();
             builder.Services.AddScoped<ITaxService, TaxService>();
-            builder.Services.AddScoped<ICountryService, CountryService>();
+            builder.Services.AddScoped<ICountryService, CountryService>();            
             return builder;
         }
     }

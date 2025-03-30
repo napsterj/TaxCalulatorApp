@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -9,10 +10,11 @@ using TaxCalulator.UI.IServices.Interface;
 
 namespace TaxCalulator.UI.Components.Pages
 {
-    public partial class VatCalculator(ITaxService taxService)
+    public partial class VatCalculator(ITaxService taxService, 
+                                       IMemoryCache cache)
     {
         private readonly ITaxService _taxService = taxService;
-
+        private readonly IMemoryCache cache = cache;
         private List<TaxRateDto> taxRates = new();
 
         private bool isDisableNetPrice = false;
@@ -35,11 +37,22 @@ namespace TaxCalulator.UI.Components.Pages
 
             countryName = CountryName;
 
-            var response = await _taxService.GetTaxRatesByCountry(countryDto);
-            var deserializedResponse = JsonConvert.DeserializeObject<DeserializeTaxRateHandler>(Convert.ToString(response.Result));
-            taxRates = deserializedResponse.Result;
+            //Fetching the response from InMemory cache to save an api call and subequent db calls to fetch tax rates based
+            //on country name, because tax rates do not change so often.
+            List<TaxRateDto> taxRates = cache.Get<List<TaxRateDto>>(CountryName)!;
             
-            if(taxRates.Count > 0)
+            if (taxRates == null || taxRates.Count == 0)
+            {
+                var response = await _taxService.GetTaxRatesByCountry(countryDto);
+                var deserializedResponse = JsonConvert.DeserializeObject<DeserializeTaxRateHandler>(Convert.ToString(response.Result));
+                taxRates = deserializedResponse.Result;
+                
+                //Saving the response in the cache for the duration of 2 days.
+                taxRates = cache.Set<List<TaxRateDto>>(CountryName, taxRates, TimeSpan.FromDays(2));
+            }
+            
+
+            if (taxRates.Count > 0)
                 await SetSelectedVatRate(taxRates[0].Rate);
 
             Reset();
