@@ -49,7 +49,7 @@ namespace TaxCalulator.API.Controllers
             if (taxRates == null || !taxRates.Any())
             {
                 var responseDto = BuildResponseDto(HttpStatusCode.NotFound,
-                                                   AppConstants.NO_VAT_RATES_FOUND);
+                                                   $"{AppConstants.NO_VAT_RATES_FOUND} {countryDto.Name}");
                 return NotFound(responseDto);
             }
 

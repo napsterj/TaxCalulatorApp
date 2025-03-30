@@ -13,21 +13,24 @@ namespace TaxCalculator.Repo.Implementation
         {
             var vatAmount = (netAmount * selectedTaxRate) / 100;
             var grossAmount = netAmount + vatAmount;
-            return (vatAmount, grossAmount);
+            return (Math.Round(vatAmount,2), 
+                    Math.Round(grossAmount,2));
         }
 
         public (decimal, decimal) GetNetAndGrossValues(decimal vatAmount, decimal selectedTaxRate)
         {
             var netAmount = (vatAmount * 100) / selectedTaxRate;
             var grossAmount = netAmount + vatAmount;
-            return (netAmount, grossAmount);
+            return (Math.Round(netAmount,2), 
+                    Math.Round(grossAmount, 2));
         }
 
         public (decimal, decimal) GetNetAndVatValues(decimal grossAmount, decimal selectedTaxRate)
         {
             var netAmount = grossAmount * 100 / (selectedTaxRate + 100);
             var vatAmount = grossAmount - netAmount;
-            return (netAmount, vatAmount);
+            return (Math.Round(netAmount, 2), 
+                    Math.Round(vatAmount, 2));
         }
 
         public async Task<IEnumerable<TaxRate>> GetTaxRatesByCountry(Country country)
