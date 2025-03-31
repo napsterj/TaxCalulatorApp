@@ -39,7 +39,7 @@ namespace TaxCalulator.UI.Components.Pages
 
             //Fetching the response from InMemory cache to save an api call and subequent db calls to fetch tax rates based
             //on country name, because tax rates do not change so often.
-            List<TaxRateDto> taxRates = cache.Get<List<TaxRateDto>>(CountryName)!;
+            taxRates = cache.Get<List<TaxRateDto>>($"ratesFor{countryName}")!;
             
             if (taxRates == null || taxRates.Count == 0)
             {
@@ -48,7 +48,7 @@ namespace TaxCalulator.UI.Components.Pages
                 taxRates = deserializedResponse.Result;
                 
                 //Saving the response in the cache for the duration of 2 days.
-                taxRates = cache.Set<List<TaxRateDto>>(CountryName, taxRates, TimeSpan.FromDays(2));
+                taxRates = cache.Set<List<TaxRateDto>>($"ratesFor{countryName}", taxRates, TimeSpan.FromDays(2));
             }
             
 

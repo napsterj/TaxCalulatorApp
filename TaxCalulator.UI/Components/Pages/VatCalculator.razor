@@ -12,21 +12,25 @@
             <Countries CountryName="FetchCountryVatRates"></Countries>
         </div>
     </div>
-    <div class="row">
-        <div class="col p-3 m-3">
-            <Virtualize Context="model" Items="@taxRates">
-                <input type="radio" 
-                       name="vatrates"                        
-                       checked="@(taxRates.IndexOf(model) == 0)"
-                       class="form-check-input border-warning" 
-                       @onclick="@(() => SetSelectedVatRate(model.Rate))"
-                       @bind-value="@model.Rate" />
-                
-                    &nbsp;&nbsp;@model.Rate % &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </Virtualize>
+    @if(taxRates != null && taxRates.Count > 0)
+    {
+        <div class="row">
+            <div class="col p-3 m-3">
+                <Virtualize Context="model" Items="@taxRates">
+                    <input type="radio"
+                           name="vatrates"
+                           checked="@(taxRates.IndexOf(model) == 0)"
+                           class="form-check-input border-warning"
+                           @onclick="@(() => SetSelectedVatRate(model.Rate))"
+                           @bind-value="@model.Rate" />
 
+                    &nbsp;&nbsp;@model.Rate % &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </Virtualize>
+
+            </div>
         </div>
-    </div>
+    }
+    
 </div>
 
 <div class="container m-4">
